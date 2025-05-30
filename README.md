@@ -1,2 +1,4 @@
 # ComfyUI-setup-on-Windows-WSL2
-WindowsのWSL2でComfyUIをセットアップするためのBatchファイル
+WindowsのWSL2でComfyUIをセットアップするためのWindows Batchファイル
+
+WIP: README.mdを書く
