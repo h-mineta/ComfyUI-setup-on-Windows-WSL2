@@ -12,7 +12,6 @@ powershell -NoProfile -Command ^
 REM PowerShellスクリプトを実行
 powershell -NoProfile -ExecutionPolicy Unrestricted -File "%TMP_PS%"
 del "%TMP_PS%"
-pause > nul
 exit
 
 REM -----------------------------------------------------------------------------------------------
@@ -21,7 +20,7 @@ REM --- BEGIN POWERSHELL ---
 # Install WSL2 and Fedora on Windows using PowerShell
 
 $env:WSL_UTF8 = 1
-$DistroName = "Fedora-ComfyUI"
+$DistroName = "ComfyUI-Fedora"
 $DistroPath = "C:\WSL\$DistroName"
 $DistroUrl = "https://ftp.riken.jp/Linux/fedora/releases/42/Container/x86_64/images/Fedora-WSL-Base-42-1.1.x86_64.tar.xz"
 $DistroSHA256 = "99fb3d05d78ca17c6815bb03cf528da8ef82ebc6260407f2b09461e0da8a1b8d"
@@ -40,7 +39,6 @@ if ($wslList) {
     }
     else {
         Write-Host "Operation cancelled."
-        exit
     }
 }
 
@@ -70,7 +68,6 @@ if (Test-Path "$DistroPath") {
     }
     else {
         Write-Host "Operation cancelled."
-        exit
     }
 }
 New-Item -ItemType Directory -Path "$DistroPath" | Out-Null
@@ -139,20 +136,31 @@ exit
 '@
 
 ($bashScript -replace "`r`n", "`n") | Set-Content ".\setup_root.sh"
-wsl.exe -d $DistroName -- bash -c "bash ./setup_root.sh"
+wsl.exe --user root -d $DistroName -- bash -c "bash ./setup_root.sh"
 
 wsl.exe -t $DistroName
 
 $bashScript = @'
 #!/bin/bash
 cd /opt
-git clone https://github.com/h-mineta/ComfyUI-running-on-Podman-WSL2.git
+if [ ! -d "ComfyUI-running-on-Podman-WSL2" ]; then
+    echo "Cloning ComfyUI-running-on-Podman-WSL2 repository..."
+    git clone https://github.com/h-mineta/ComfyUI-running-on-Podman-WSL2.git
+else;
+    echo "ComfyUI-running-on-Podman-WSL2 already exists."
+fi
 cd ComfyUI-running-on-Podman-WSL2
 
 git config --global --add safe.directory /opt/ComfyUI-running-on-Podman-WSL2
-git checkout tags/v0.3.39-20250531
+git pull
 
 chmod +x build.sh start_comfyui.sh
+
+# Remove old ComfyUI images
+podman images --format "{{.Repository}}:{{.Tag}} {{.ID}}" \
+  | grep '^localhost/comfyui' \
+  | awk '{print $2}' \
+  | xargs -r podman rmi -f
 
 # Build ComfyUI Container
 ./build.sh
