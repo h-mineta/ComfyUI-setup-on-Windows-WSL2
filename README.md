@@ -5,8 +5,14 @@ WindowsのWSL2でComfyUIをセットアップするためのWindows Batchファ�
 このリポジトリは、WindowsのWSL2上でComfyUIをセットアップするための手順を提供します。  
 この手順に従うことで、Windows上で簡単にComfyUIを利用できるようになります。
 
+構築されるComfyUIは、  
+https://github.com/m10i-0nyx/ComfyUI-running-on-Podman-WSL2  
+から取得しています。
+
 # ATTENTION(注意事項)
+- 下記をよく読み、セキュアな環境構築をしてください  
 - このWindows Batchファイルは信用されるサイトからダウンロードしてください。  
+  それ以外のサイトでは悪意のあるコードが混入される可能性があります。  
   例:
   https://github.com/h-mineta/ComfyUI-setup-on-Windows-WSL2/archive/refs/heads/main.zip
 - WindowsのWSL2上でComfyUIをセットアップするためのものです。
