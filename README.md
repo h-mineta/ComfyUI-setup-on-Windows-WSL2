@@ -1,6 +1,18 @@
 # ComfyUI-setup-on-Windows-WSL2
 WindowsのWSL2でComfyUIをセットアップするためのWindows Batchファイル
 
+# これは何？
+このリポジトリは、WindowsのWSL2上でComfyUIをセットアップするための手順を提供します。  
+この手順に従うことで、Windows上で簡単にComfyUIを利用できるようになります。
+
+# ATTENTION(注意事項)
+- このWindows Batchファイルは信用されるサイトからダウンロードしてください。  
+  例:
+  https://github.com/h-mineta/ComfyUI-setup-on-Windows-WSL2/archive/refs/heads/main.zip
+- WindowsのWSL2上でComfyUIをセットアップするためのものです。
+- Windows 11での動作を確認しています。
+- WSL2上でNVIDIA GPUを使用することを前提としています。
+
 ## インストール方法
 
 1. WSL2を有効にする  
